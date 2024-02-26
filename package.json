@@ -10,7 +10,7 @@
     "serve": "webpack serve --progress --color --mode=development --config webpack.config.ts"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.10",
+    "@apollo/client": "3.6.5-microsoft.jvejr-usefragment-cherry-picked-1708674259",
     "@babel/runtime": "^7.12.0",
     "@graphitation/graphql-js-tag": "^0.9.1",
     "@graphitation/supermassive": "^3.4.2",
@@ -45,10 +45,10 @@
   },
   "devDependencies": {
     "@graphitation/cli": "^1.11.1",
+    "@graphql-tools/webpack-loader": "7.0.0",
     "@types/graphql": "^14.5.0",
     "@types/lodash": "^4.14.175",
     "@types/react": "^17.0.30",
-    "@graphql-tools/webpack-loader": "7.0.0",
     "@types/react-dom": "^17.0.9",
     "@types/uuid": "^8.3.1",
     "cross-env": "^7.0.3",

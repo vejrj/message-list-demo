@@ -118,7 +118,6 @@ export class MessageStorage {
 
   getAllMessages(): Array<Message> {
     const existingMessages = this.localStorage.getItem(ALL_MESSAGES_KEY);
-    console.log(JSON.parse(existingMessages as string))
     if (existingMessages) {
       return JSON.parse(existingMessages) as any as Array<Message>;
     } else {
@@ -153,8 +152,7 @@ export class MessageStorage {
   }): Message | null {
 
     const messages = this.getAllMessages();
-    const message = messages.find(({ id: messageId }) => messageId === id) as Message;
-      const messageIndex = parseInt(message.id, 10)
+    const messageIndex: number = messages.findIndex(({ id: messageId }) => messageId === id);
       if (name) {
         messages[messageIndex].name = name;
       }
@@ -163,7 +161,6 @@ export class MessageStorage {
       }
       this.saveMessages(messages);
 
-      console.log(messages[messageIndex])
     return messages[messageIndex];
   }
 }

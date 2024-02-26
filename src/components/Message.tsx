@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Profiler } from "react";
 
-import { useFragment, gql } from "@apollo/client";
+import { useFragment, gql, useMutation } from "@apollo/client";
 import Reaction, { ReactionFragment } from "./Reaction";
 import ReactionOld from "./ReactionOld";
+import { TEST, markIdAsRendered, onRender, reset } from "./utils";
 
 export const AllMessageFragment = gql`
   fragment AllMessageFragment on Message {
@@ -126,6 +127,7 @@ export const MessageFragment = gql`
     id
     name
     reactions {
+      __typename
       id
       ...ReactionFragment
     }
@@ -235,27 +237,27 @@ export const MessageFragment = gql`
   ${ReactionFragment}
 `;
 
-// const UpdateMessage = graphql`
-//   mutation UpdateMessage($id: ID!, $name: String, $isCompleted: Boolean) {
-//     updateMessage(id: $id, name: $name, isCompleted: $isCompleted) {
-//       ...MessageFragment
-//     }
-//   }
+const UpdateMessage = gql`
+  mutation UpdateMessage($id: ID!, $name: String, $isCompleted: Boolean) {
+    updateMessage(id: $id, name: $name, isCompleted: $isCompleted) {
+      ...MessageFragment
+    }
+  }
 
-//   ${MessageFragment}
-// `
+  ${MessageFragment}
+`;
 
 const Message = ({ messageId }: { messageId: string }) => {
   const data: any = useFragment({
-    fragment: AllMessageFragment,
-    fragmentName: "AllMessageFragment",
+    fragment: MessageFragment,
+    fragmentName: "MessageFragment",
     from: {
       __typename: "Message",
       id: messageId,
     },
   });
 
-  // const [ updateMessage ] = useMutation(UpdateMessage)
+  const [updateMessage] = useMutation(UpdateMessage);
 
   if (!data?.data) {
     return null;
@@ -264,9 +266,22 @@ const Message = ({ messageId }: { messageId: string }) => {
   const { data: message } = data;
 
   const handleChange = ({ target }: any) => {
-    // updateMessage({variables: { id: message.id, name: message.name, isCompleted: target.checked}})
+    reset();
+    updateMessage({
+      variables: {
+        id: messageId,
+        name: message.name,
+        isCompleted: target.checked,
+      },
+    });
+    console.log(TEST);
   };
 
+  const id = `Message-${message.id}`;
+
+  markIdAsRendered(id);
+
+  for (let i = 0; i < 1000000; i++) {}
   return (
     <>
       <span>{message.name}</span>
@@ -277,7 +292,7 @@ const Message = ({ messageId }: { messageId: string }) => {
       />
       {message.reactions.map((reaction: any) => (
         //<Reaction key={reaction.id} reactionId={reaction.id} />
-        <ReactionOld key={reaction.id} reaction={reaction} />
+        <Reaction key={reaction.id} reactionId={reaction.id} />
       ))}
     </>
   );

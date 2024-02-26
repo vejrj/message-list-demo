@@ -1,7 +1,5 @@
 import React from "react";
 
-import { useFragment, gql } from "@apollo/client";
-
 const Reaction = ({ reaction }: { reaction: any }) => {
   return (
     <>

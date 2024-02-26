@@ -12,6 +12,6 @@ var appOld = document.createElement("div");
 appOld.id = "appOld";
 document.body.appendChild(appOld);
 
-//render(<App />, app);
+render(<App />, app);
 
-render(<AppOld />, appOld);
+// render(<AppOld />, appOld);

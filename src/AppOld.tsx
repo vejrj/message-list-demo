@@ -27,6 +27,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 import MessageListOld, { MessageListQuery } from "./components/MessageListOld";
+import { markIdAsRendered, onRender } from "./components/utils";
 
 if (!window.localStorage.getItem(ALL_MESSAGES_KEY)) {
   window.localStorage.setItem(ALL_MESSAGES_KEY, JSON.stringify(data));
@@ -51,16 +52,11 @@ const client = new ApolloClient({
   link: from([errorLink, executableSchemaLink]),
 });
 
+const id = "OldApp";
 function App() {
+  markIdAsRendered(id);
   return (
-    <Profiler
-      id="Navigation"
-      onRender={(_id, phase, actualDuration) => {
-        if (phase === "mount") {
-          console.log(`Old solution - ${actualDuration}`);
-        }
-      }}
-    >
+    <Profiler id={id} onRender={onRender}>
       <ApolloProvider client={client}>
         <MessageListOld />
       </ApolloProvider>
