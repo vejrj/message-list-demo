@@ -27,7 +27,7 @@ const Reaction = ({ reactionId }: { reactionId: string }) => {
   }
 
   const { data: reaction } = data;
-
+  for (let i = 0; i < 1000000; i++) {}
   return (
     <>
       <span key={reaction.id}>{reaction.id}</span>

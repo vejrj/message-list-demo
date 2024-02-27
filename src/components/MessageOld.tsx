@@ -1,8 +1,8 @@
 import React, { Profiler } from "react";
-import Reaction from "./ReactionOld";
 import { gql, useMutation } from "@apollo/client";
 import { MessageFragment } from "./Message";
 import { markIdAsRendered, onRender, reset, TEST } from "./utils";
+import ReactionOld from "./ReactionOld";
 
 const UpdateMessage = gql`
   mutation UpdateMessage($id: ID!, $name: String, $isCompleted: Boolean) {
@@ -35,7 +35,7 @@ const MessageOld = ({ message }: { message: any }) => {
 
   const id = `MessageOld-${message.id}`;
   markIdAsRendered(id);
-
+  for (let i = 0; i < 1000000; i++) {}
   return (
     <Profiler id={id} onRender={onRender}>
       <>
@@ -45,6 +45,9 @@ const MessageOld = ({ message }: { message: any }) => {
           checked={message.isCompleted}
           onChange={handleChange}
         />
+        {message.reactions.map((reaction: any) => (
+          <ReactionOld key={reaction.id} reaction={reaction} />
+        ))}
       </>
     </Profiler>
   );

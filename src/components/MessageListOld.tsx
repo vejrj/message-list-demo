@@ -23,6 +23,7 @@ const MessageListOld = () => {
   const { data } = useQuery(AllMessageListOld, { fetchPolicy: "cache-only" });
 
   markIdAsRendered(id);
+  for (let i = 0; i < 1000000; i++) {}
   return (
     <Profiler id={id} onRender={onRender}>
       <>
